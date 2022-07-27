@@ -1,5 +1,9 @@
 {
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
-  "projects": {}
+  "projects": {
+    "nox-engine-editor": "apps/nox-engine-editor",
+    "nox-engine-editor-e2e": "apps/nox-engine-editor-e2e",
+    "nox-engine-editor-ui": "libs/nox-engine-editor-ui"
+  }
 }
