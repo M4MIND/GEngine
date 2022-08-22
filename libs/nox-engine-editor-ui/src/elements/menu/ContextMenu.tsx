@@ -1,28 +1,32 @@
-import React, { useEffect, useRef } from "react";
-import { basicVariants, styled } from "../theme/Theme";
-import * as Stitches from "@stitches/react";
+import React, { useEffect, useRef } from 'react';
+import { basicVariants, styled } from '../theme/Theme';
+import * as Stitches from '@stitches/react';
+import { Editor } from '../..';
 
-const ContextMenuStyle = styled("div", {
-  position: "absolute",
+const ContextMenuStyle = styled('div', {
+  position: 'absolute',
   zIndex: 9,
-  display: "none",
+  display: 'none',
   variants: {
     open: {
       true: {
-        display: "block"
-      }
-    }
-  }
+        display: 'block',
+      },
+    },
+  },
 }, basicVariants);
 
 type Variants = Stitches.VariantProps<typeof ContextMenuStyle>
 
 export const ContextMenu: React.FC<{
-    children: React.ReactNode,
     pos?: { x: number, y: number },
     onClose?: () => void,
+    items?: {
+      title: string,
+      callback: () => void,
+    }[]
   }
-  & Variants> = ({ pos, onClose, ...props }) => {
+  & Variants> = ({ pos, onClose, items, ...props }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,14 +39,20 @@ export const ContextMenu: React.FC<{
       }
     };
 
-    document.addEventListener("mousedown", handler);
+    document.addEventListener('mousedown', handler);
     return () => {
-      document.removeEventListener("mousedown", handler);
+      document.removeEventListener('mousedown', handler);
     };
   });
 
-  return <ContextMenuStyle ref={ref} css={{
+  return <ContextMenuStyle {...props} ref={ref} css={{
     left: pos?.x,
-    top: pos?.y
-  }} {...props} />;
+    top: pos?.y,
+  }}>
+    <Editor.Dropdown open={true} v_bgc={'primary'}>
+      {items && items.map(v => {
+        return <Editor.DropdownItem onClick={v.callback}>{v.title}</Editor.DropdownItem>;
+      })}
+    </Editor.Dropdown>
+  </ContextMenuStyle>;
 };

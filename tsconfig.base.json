@@ -15,9 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nox-engine/nox-engine-editor-ui": [
-        "libs/nox-engine-editor-ui/src/index.ts"
-      ]
+      "@nox-engine/nox-engine-editor-store": ["libs/nox-engine-editor-store/src/index.ts"],
+      "@nox-engine/nox-engine-editor-ui": ["libs/nox-engine-editor-ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

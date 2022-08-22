@@ -4,6 +4,7 @@
   "projects": {
     "nox-engine-editor": "apps/nox-engine-editor",
     "nox-engine-editor-e2e": "apps/nox-engine-editor-e2e",
+    "nox-engine-editor-store": "libs/nox-engine-editor-store",
     "nox-engine-editor-ui": "libs/nox-engine-editor-ui"
   }
 }

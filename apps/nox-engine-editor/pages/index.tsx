@@ -1,13 +1,18 @@
 import { Editor } from '@nox-engine/nox-engine-editor-ui';
 import { GearFill, PlusSquareFill } from 'react-bootstrap-icons';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { StoreSelectorNoxProjects } from '../store/selector/nox/store.selector.nox.projects';
 import React from 'react';
+import { Store } from '@nox-engine/nox-engine-editor-store';
 
 export function Index() {
   const projects = useRecoilValue(StoreSelectorNoxProjects);
+  const contextMenuItems = useRecoilValue(Store.ContextMenuMenuItems);
+  const contextMenuPosition = useRecoilValue(Store.ContextMenuPosition);
+  const [ contextMenuOpen, setContextMenuOpen ] = useRecoilState(Store.ContextMenuOpen);
   return (
     <Editor.Home v_bgc={'dark'}>
+      <Editor.ContextMenu onClose={() => {setContextMenuOpen(false)}} open={contextMenuOpen} pos={contextMenuPosition} items={contextMenuItems} />
       <Editor.Grid
         css={{
           gridTemplateColumns: 'minmax(2rem, 1fr) minmax(auto, 64rem) minmax(2rem, 1fr)',
@@ -19,7 +24,7 @@ export function Index() {
               <Editor.Typography as={'h1'} v_marginBottom={'none'}>Projects</Editor.Typography>
             </Editor.GridItem>
             <Editor.GridItem v_marginBottom={'m'} justifyContent={'right'} alignItems={'center'} colStart={2}>
-              <Editor.Grid css={{gridTemplateColumns: 'auto auto'}}>
+              <Editor.Grid css={{ gridTemplateColumns: 'auto auto' }}>
                 <Editor.Button v_bgc={'blue'} $icon={<PlusSquareFill />}>New project</Editor.Button>
                 <Editor.Button v_bgc={'secondary'} $icon={<GearFill />}>Settings</Editor.Button>
               </Editor.Grid>

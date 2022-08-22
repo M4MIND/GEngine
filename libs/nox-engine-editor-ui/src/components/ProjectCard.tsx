@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { GearFill, ThreeDots, TrashFill } from 'react-bootstrap-icons';
 import { Editor } from '..';
+import { useSetRecoilState } from 'recoil';
+import { Store } from '@nox-engine/nox-engine-editor-store';
 
 export const ProjectCard: React.FC<{
   name?: string,
@@ -9,21 +11,27 @@ export const ProjectCard: React.FC<{
   directory?: string[],
 }> = ({ name, description, modified }) => {
   const [dropdown, setDropdown] = useState(false);
-  const [contextMenu, setContextMenu] = useState(false);
-  const [contextPosition, setContextPosition] = useState({ x: 0, y: 0 });
+  const contextMenuItems = useSetRecoilState(Store.ContextMenuMenuItems);
+  const contextMenuPosition = useSetRecoilState(Store.ContextMenuPosition);
+  const contextMenuOpen = useSetRecoilState(Store.ContextMenuOpen);
 
   return (
     <Editor.Container v_padding={'none'}>
-      <Editor.ContextMenu pos={contextPosition} open={contextMenu} onClose={() => setContextMenu(false)}>
-        <Editor.Dropdown v_bgc={'secondary'} open={true}>
-          <Editor.DropdownItem icon={<GearFill />}>Settings</Editor.DropdownItem>
-          <Editor.DropdownItem icon={<TrashFill />}>Remove project</Editor.DropdownItem>
-        </Editor.Dropdown>
-      </Editor.ContextMenu>
       <Editor.Card v_bgc={'light'} onContextMenu={(e) => {
         e.preventDefault();
-        setContextPosition({ x: e.clientX, y: e.clientY });
-        setContextMenu(true);
+        contextMenuPosition({ x: e.clientX, y: e.clientY });
+        contextMenuOpen(true);
+        contextMenuItems([{
+          title: 'Settings',
+          callback: () => {
+            console.dir('Click settings');
+          },
+        }, {
+          title: 'Remove',
+          callback: () => {
+            console.dir('Click remove');
+          },
+        }]);
       }
       }>
         <Editor.CardBody v_paddingBottom={'none'}>
